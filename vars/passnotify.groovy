@@ -1,4 +1,4 @@
-def call(String emailRecipient, String slackChannel,String slackTokenId) {
+def call(String emailRecipient, String slackChannel, String slackTokenId) {
     post {
         success {
             emailext(
