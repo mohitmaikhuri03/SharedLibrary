@@ -1,0 +1,48 @@
+@Library('mera@main') _ 
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Clean Workspace') {
+            steps {
+            script {
+                statictest.clean()
+                }
+            }
+        }
+
+        stage('Cloning the Repo') {
+            steps {
+            script {
+                statictest.clone('main', 'https://github.com/snaatak-Zero-Downtime-Crew/salary-api.git' , 'Snaatak' )
+            }
+        }
+        }
+    
+
+
+        stage('Static Code Analysis') {
+            steps {
+            script {
+                statictest.statictest('demo', 'sonartoken') 
+                }
+            }
+        }
+    }
+
+
+    post {
+        success {
+        script {
+            statictest.pass('mohit.kumar@mygurukulam.co', 'snaatak', 'slack')  
+        }
+        }
+        failure {
+        script {
+            statictest.fail('mohit.kumar@mygurukulam.co', 'snaatak', 'slack')
+            }
+        }
+    }
+}
+
