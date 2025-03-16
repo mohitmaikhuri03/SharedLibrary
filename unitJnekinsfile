@@ -1,0 +1,58 @@
+@Library('mera@Mohit-SCRUM-194') _ 
+
+
+pipeline {
+    agent any 
+    tools {
+        go 'Go'
+    }
+
+    stages {
+        stage('Clean Workspace') {
+            steps {
+                script {
+                unittest.clean()
+                }
+            }
+        }
+
+        stage('Clone Repository') {
+            steps {
+                script {
+                      unittest.clone('main' , 'https://github.com/snaatak-Zero-Downtime-Crew/employee-api.git','Snaatak')
+                }
+            }
+        }
+
+        stage('Unit Testing with Coverage') {
+            steps {
+                script {
+               unittest.unittest('reports')
+                }
+            }
+        }
+
+       
+
+        stage('Archive Reports') {
+            steps {
+                script {
+                 unittest.artifacts('reports')
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            script {
+            unittest.pass('reports','mohit.kumar@mygurukulam.co', 'snaatak', 'slack')  
+            }
+        }
+        failure {
+            script {
+           unittest.fail('reports','mohit.kumar@mygurukulam.co', 'snaatak', 'slack')
+        }
+        }
+    }
+}
