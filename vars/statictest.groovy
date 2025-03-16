@@ -6,7 +6,7 @@ def call(String projectKey, String sonar, String credentialsId ) {
             -Dsonar.projectKey=${projectKey} \
             -Dsonar.login=${SONARQUBE_TOKEN} \
             -Dsonar.projectName='${projectKey}' \
-            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
+            // -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
             -Dsonar.qualitygate.wait=true 
             """
         }
