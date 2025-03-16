@@ -1,4 +1,4 @@
-def call(String emailRecipient, String slackChannel) {
+def call(String emailRecipient, String slackChannel, String slackTokenId) {
     post {
         success {
             emailext(
@@ -9,7 +9,7 @@ def call(String emailRecipient, String slackChannel) {
             slackSend(
                 channel: slackChannel, 
                 message: "Build Failure: JOB-Name:- ${env.JOB_NAME} Build_No.:- ${env.BUILD_NUMBER} & Build-URL:- ${env.BUILD_URL}", 
-                tokenCredentialId: 'slack'
+                tokenCredentialId: 'slackTokenIdj'
             )
         }
     }
