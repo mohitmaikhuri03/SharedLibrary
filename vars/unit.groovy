@@ -23,31 +23,37 @@ def artifacts(String reports) {
     archiveArtifacts artifacts: "${reports}/*.txt", fingerprint: true
 }
 
-def pass(String emailRecipient, String slackChannel, String slackTokenId) { 
+def pass(String reports, String emailRecipient, String slackChannel, String slackTokenId) { 
     emailext(
+        attachmentsPattern: "${reports}/*.txt",
         body: 'Build Success', 
         subject: "Job Name: ${env.JOB_NAME}, Build Number: ${env.BUILD_NUMBER}", 
         to: emailRecipient
     )
+
     slackSend(
         channel: slackChannel, 
-        message: "Build Successful: JOB-Name:- ${env.JOB_NAME} Build_No.:- ${env.BUILD_NUMBER} & Build-URL:- ${env.BUILD_URL}", 
-        tokenCredentialId: slackTokenId
+        tokenCredentialId: slackTokenId, 
+        message: "Job Name: ${env.JOB_NAME}, Build Number: ${env.BUILD_NUMBER} - Build Success"
     )
 }
 
-def fail(String emailRecipient, String slackChannel, String slackTokenId) { 
+
+def fail(String reports, String emailRecipient, String slackChannel, String slackTokenId) { 
     emailext(
+        attachmentsPattern: "${reports}/*.txt",
         body: 'Build Failure', 
         subject: "Job Name: ${env.JOB_NAME}, Build Number: ${env.BUILD_NUMBER}", 
         to: emailRecipient
     )
+
     slackSend(
         channel: slackChannel, 
-        message: "Build Failure: JOB-Name:- ${env.JOB_NAME} Build_No.:- ${env.BUILD_NUMBER} & Build-URL:- ${env.BUILD_URL}", 
-        tokenCredentialId: slackTokenId
+        tokenCredentialId: slackTokenId, 
+        message: "Job Name: ${env.JOB_NAME}, Build Number: ${env.BUILD_NUMBER} - Build Success"
     )
 }
+
 def call() {
     clean()
     clone()
